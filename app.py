@@ -238,6 +238,7 @@ def video(input_url):
     return Response(predict1(url),mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
+# Route to get list of suspects
 @app.route('/suspects')
 def suspects():
     conn = None
@@ -276,6 +277,7 @@ def suspects():
             db_pool.putconn(conn)
 
 
+# Route to serve suspect images
 @app.route('/images/<path:filename>')
 def get_image(filename):
     print("Hi")
@@ -283,6 +285,7 @@ def get_image(filename):
     return send_file(os.path.join('suspects', filename))
 
 
+# Route for user registration
 @app.route('/register', methods=['POST'])
 def register():
     conn = None
@@ -319,6 +322,7 @@ def register():
             db_pool.putconn(conn)
 
 
+# Route for user login
 @app.route('/login', methods=['POST'])
 def login():
     conn = None
