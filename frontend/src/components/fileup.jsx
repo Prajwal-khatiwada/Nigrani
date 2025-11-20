@@ -4,71 +4,39 @@ import VideoPlayer from "./video";
 import LoadingBar from "./loading";
 import YoutubeEmbed from "./YoutubeEmbed";
 import { BiCctv } from "react-icons/bi";
+
 function FileWindow() {
-
-
     const [file, setFile] = useState()
     const [url, setURL] = useState()
     const [path, setPath] = useState()
     const [success, setSuccess] = useState(0)
     const [content, setContent] = useState('')
     const [processing, setProcessing] = useState(0)
+
     function handleChange(event) {
         setFile(event.target.files[0])
     }
+
     function handleUrlChange(event) {
         console.log(event.target.value)
         setURL(event.target.value)
     }
 
-    // function handleSubmit(event) {
-    //     event.preventDefault()
-    //     setSuccess(0)
-    //     if (file) {
-    //         setContent('Processing...')
-
-    //         setProcessing(1)
-    //         const url = 'http://127.0.0.1:5000/detect';
-    //         const formData = new FormData();
-    //         formData.append('video', file);
-    //         const config = {
-    //             headers: {
-    //                 'content-type': 'multipart/form-data',
-    //             },
-    //         };
-    //         axios.post(url, formData, config).then((response) => {
-    //             console.log(response.data);
-    //             setProcessing(0)
-    //             if (response.status == 200) {
-
-    //                 setSuccess(1)
-
-    //             }
-    //             else {
-    //                 setSuccess(0)
-    //             }
-    //         });
-    //     }
-    //     else {
-    //         setContent('No file found...')
-    //     }
-
-    // }
-
-    // function handleRetrieve(event) {
-    //     event.preventDefault()
-    //     axios.get('https://cb10-35-199-168-46.ngrok-free.app/return-files').then(resp => {
-
-    //         console.log(resp.data);
-    //     });
-
     function handleURLSubmit(event) {
         event.preventDefault()
         setPath(url)
         setSuccess(1)
+        setProcessing(1)
     }
 
+    function handleStreamLoad() {
+        setProcessing(0)
+    }
 
+    function handleStreamError() {
+        setProcessing(0)
+        alert("Failed to load video stream. Please check the URL.")
+    }
 
     return (
         <div className="flex-row items-center justify-start">
@@ -81,16 +49,18 @@ function FileWindow() {
                 </form>
             </div>
 
-            {/* <div className="flex items-center justify-center">
-                <YoutubeEmbed source="https://www.youtube.com/embed/ha0odJte1ns" />
-            </div> */}
-
-
-            {success == 1 ? <VideoPlayer url={path}></VideoPlayer> : ''}
+            {success == 1 ? (
+                <div className={processing ? 'hidden' : 'block'}>
+                    <VideoPlayer
+                        url={path}
+                        onLoad={handleStreamLoad}
+                        onError={handleStreamError}
+                    />
+                </div>
+            ) : ''}
             {processing == 1 ? <LoadingBar /> : ''}
         </div>
     )
 }
-
 
 export default FileWindow;

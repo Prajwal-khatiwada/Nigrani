@@ -1,10 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import Sidebar from '../components/Sidebar';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Home = () => {
   const [recentSuspects, setRecentSuspects] = useState([]);
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem('isLoggedIn');
+    navigate('/login');
+  };
 
   useEffect(() => {
     axios
@@ -30,7 +36,13 @@ const Home = () => {
           </div>
           <div className="text-right">
             <p className="text-sm text-gray-500">System Status</p>
-            <p className="text-green-600 font-semibold">● Online</p>
+            <p className="text-green-600 font-semibold mb-2">● Online</p>
+            <button
+              onClick={handleLogout}
+              className="text-xs text-red-600 hover:text-red-800 font-medium underline"
+            >
+              Logout
+            </button>
           </div>
         </div>
 
@@ -62,17 +74,17 @@ const Home = () => {
                 <tbody className="bg-white divide-y divide-gray-200">
                   {recentSuspects.map((suspect, index) => {
                     // Parse filename for date/time
-                    // Format: folder/YYYYMMDDHHMMSS.jpg
-                    const filename = suspect.file_name.split('/').pop();
-                    const dateStr = filename.slice(0, 8);
-                    const timeStr = filename.slice(8, 14); // HHMMSS
+                    // Format: YYYYMMDD/HHMMSS.jpg
+                    const parts = suspect.file_name.split('/');
+                    const datePart = parts[0]; // YYYYMMDD
+                    const timePart = parts[1].split('.')[0]; // HHMMSS
 
-                    const year = dateStr.slice(0, 4);
-                    const month = dateStr.slice(4, 6);
-                    const day = dateStr.slice(6, 8);
+                    const year = datePart.slice(0, 4);
+                    const month = datePart.slice(4, 6);
+                    const day = datePart.slice(6, 8);
 
-                    const hour = timeStr.slice(0, 2);
-                    const min = timeStr.slice(2, 4);
+                    const hour = timePart.slice(0, 2);
+                    const min = timePart.slice(2, 4);
 
                     return (
                       <tr key={index}>
@@ -88,7 +100,7 @@ const Home = () => {
                           <div className="text-sm text-gray-500">{hour}:{min}</div>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                          Unknown Location
+                          {suspect.location}
                         </td>
                       </tr>
                     );
@@ -126,8 +138,12 @@ const Home = () => {
             <p className="text-sm text-gray-600"><strong>Support:</strong> contact@nigrani.gov.np</p>
           </div>
         </div>
+
+        <div className="mt-8 mb-4 text-center text-gray-500 text-sm">
+          Developed by: Prajwal Khatiwada
+        </div>
       </div>
-    </div>
+    </div >
   );
 };
 

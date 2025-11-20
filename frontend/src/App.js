@@ -4,6 +4,7 @@ import Tool from './pages/Tool'
 import Suspects from './pages/Suspects'
 import Login from './pages/Login'
 import Register from './pages/Register'
+import ProtectedRoute from './components/ProtectedRoute'
 
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
@@ -14,15 +15,27 @@ const router = createBrowserRouter([
   },
   {
     path: '/dashboard',
-    element: <Home />,
+    element: (
+      <ProtectedRoute>
+        <Home />
+      </ProtectedRoute>
+    ),
   },
   {
     path: '/tool',
-    element: <Tool />,
+    element: (
+      <ProtectedRoute>
+        <Tool />
+      </ProtectedRoute>
+    ),
   },
   {
     path: '/suspects',
-    element: <Suspects />,
+    element: (
+      <ProtectedRoute>
+        <Suspects />
+      </ProtectedRoute>
+    ),
   },
   {
     path: '/login',

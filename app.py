@@ -136,7 +136,7 @@ def predict1(video_path):
         font = cv2.FONT_HERSHEY_COMPLEX
         now=datetime.now()
         current_time = now.strftime("%H:%M:%S")
-
+        cv2.putText(frame,"Lokanthali, Bhaktapur",(0,50),font,1,(255, 0, 0),2)
         cv2.putText(frame,current_time,(0,100),font,1,(0, 0, 255),2)
         # time.sleep(1)
 
@@ -259,6 +259,7 @@ def suspects():
         for row in rows:
             results.append({
                 "file_name": row[0],
+                "location": "Lokanthali, Bhaktapur"
             })
 
         # close the cursor

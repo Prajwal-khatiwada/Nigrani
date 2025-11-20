@@ -100,7 +100,7 @@ const Suspects = () => {
                   <div className="w-[10%] mx-5 text-start">{i + 1}</div>
                   <div className="w-[15%] mx-5 text-center">{formattedDateString}</div>
                   <div className="w-[15%] mx-5 text-center">{formattedTimeString}</div>
-                  <div className="w-[15%] mx-5 text-center">Sifal, Kathmandu</div>
+                  <div className="w-[15%] mx-5 text-center">{x.location}</div>
                   <div className="w-[45%] mx-5 flex justify-center">
                     <a target="_blank" href='/'>
                       <img
